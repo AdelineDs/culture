@@ -1,0 +1,12 @@
+{
+    "name": "adelined/troyes_culture",
+    "authors": [
+        {
+            "name": "Adeline",
+            "email": "deca.adeline@gmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "^3.12"
+    }
+}
