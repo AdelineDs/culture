@@ -20,5 +20,6 @@ $app->add(new \App\Middlewares\OldMiddleware($container->view->getEnvironment())
 $app->get('/', \App\Controllers\PagesController::class . ':home')->setName('root');
 $app->get('/admin', \App\Controllers\PagesController::class . ':admin')->setName('admin');
 $app->post('/admin', \App\Controllers\PagesController::class . ':postEvent');
+$app->get('/search', \App\Controllers\PagesController::class . ':searchPage')->setName('search');
 
 $app->run();

@@ -51,7 +51,6 @@ class  PagesController extends Controller {
             $endViewDate = $request->getParam('end_view_date');
             $endViewHour = $request->getParam('end_view_hour');
             $status = $request->getParam('status');
-            die();
             $this->events->addEvent($name, $organizer, $date, $hour, $place, $price, $description, $startViewDate, $startViewHour, $endViewDate, $endViewHour, $status);
             $this->flash('Le nouvel évènement a été enregistré avec succès');
             return $this->redirect($response, 'admin');
@@ -60,6 +59,13 @@ class  PagesController extends Controller {
             $this->flash($errors, 'errors');
             return $this->redirect($response, 'admin', 400);
         }
+    }
+    
+    public function searchPage(RequestInterface $request, ResponseInterface $response) {
+        $this->events = new EventsManager();
+        $keyWords = $request->getParam('search');
+        $events = $this->events->searchEvents($keyWords);
+        $this->render($response, 'pages/searchPage.twig', ['events' => $events]);
     }
    
 }
