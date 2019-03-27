@@ -15,5 +15,9 @@ class  PagesController extends Controller {
         $events = $this->events->getEvents();
         $this->render($response, 'pages/home.twig', ['events' => $events]);
     }
+    
+    public function admin(RequestInterface $request, ResponseInterface $response) {
+        $this->render($response, 'pages/admin.twig');
+    }
    
 }
