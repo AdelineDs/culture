@@ -2,67 +2,79 @@
 
 {% block content %}
      <h2 class="d-flex justify-content-center">Entrer une nouvel évènement :</h2>
-    <form action="" method="post">
+     
+    {% if flash.success %}
+        <div class="alert alert-success">
+            {{ flash.success }}
+        </div>
+    {% endif %}
+    {% if flash.error %}
+        <div class="alert alert-danger">
+            {{ flash.error}}
+        </div>
+    {% endif %}
+    
+    <form action="{{ path_for('admin') }}" method="post">
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="name">Nom : </label>
-                <input type="text" class="form-control" id="name"  placeholder="" required>
+                <input type="text" class="form-control" id="name"  name="name" placeholder="" value="{{ old.name}}" required>
             </div>
             <div class="form-group col-md-6">
                 <label for="organizer">Organisateur : </label>
-                <input type="text" class="form-control" id="organizer"  placeholder="" required>
+                <input type="text" class="form-control" id="organizer"  name="organizer" placeholder="" value="{{ old.organizer}}" required>
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="date">Date : </label>
-                <input type="date" class="form-control" id="date"  placeholder="" min="2019-01-01" max="2100-12-31" required>
+                <input type="date" class="form-control" id="date" name="date" placeholder="" value="{{ old.date}}" min="2019-01-01" max="2100-12-31" required>
             </div>
             <div class="form-group col-md-6">
                 <label for="hour">Heure : </label>
-                <input type="time" class="form-control" id="hour"  placeholder="" min="00:00" max="23:59" required>
+                <input type="time" class="form-control" id="hour"  name="hour" placeholder="" value="{{ old.hour}}" min="00:00" max="23:59" required>
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="place">Lieu : </label>
-                <input type="text" class="form-control" id="place"  placeholder="" required>
+                <input type="text" class="form-control" id="place" name="place" placeholder="" value="{{ old.place}}" required>
             </div>
             <div class="form-group col-md-6">
-                <label for="price">Prix : </label>
-                <input type="text" class="form-control" id="price"  placeholder="" required>
+                <label for="price">Tarif : </label>
+                <input type="text" class="form-control" id="price" name="price" placeholder="" value="{{ old.price}}" required>
             </div>
         </div>
         <div class="form-group">
             <label for="description">Description : </label>
-            <textarea type="text" class="form-control" id="description"  placeholder="" required></textarea>
+            <textarea type="text" class="form-control" id="description" name="description" placeholder="" required>{{ old.description}}</textarea>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="start_view_date">Date de début d'affichage : </label>
-                <input type="date" class="form-control" id="start_view_date"  placeholder="" min="2019-01-01" max="2100-12-31" required>
+                <input type="date" class="form-control" id="start_view_date" name="start_view_date" value="{{ old.start_view_date}}" placeholder="" min="2019-01-01" max="2100-12-31" required>
             </div>
             <div class="form-group col-md-6">
                 <label for="start_view_hour">Heure de début d'affichage : </label>
-                <input type="time" class="form-control" id="start_view_hour"  placeholder="" min="00:00" max="23:59" required>
+                <input type="time" class="form-control" id="start_view_hour" name="start_view_hour" value="{{ old.start_view_hour}}" placeholder="" min="00:00" max="23:59" required>
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="end_view_date">Date de fin d'affichage : </label>
-                <input type="date" class="form-control" id="end_view_date"  placeholder="" min="2019-01-01" max="2100-12-31" required>
+                <input type="date" class="form-control" id="end_view_date" name="end_view_date" value="{{ old.end_view_date}}" placeholder="" min="2019-01-01" max="2100-12-31" required>
             </div>
             <div class="form-group col-md-6">
                 <label for="end_view_hour">Heure de début d'affichage : </label>
-                <input type="time" class="form-control" id="end_view_hour"  placeholder="" min="00:00" max="23:59" required>
+                <input type="time" class="form-control" id="end_view_hour" name="end_view_hour" value="{{ old.end_view_hour}}" placeholder="" min="00:00" max="23:59" required>
             </div>
         </div>
         <div class="form-group">
             <label for="status">Statut : </label>
-            <select type="text" class="form-control" id="status"  placeholder="" required>
-                <option>Brouillon</option>
-                <option>Publié</option>
-                <option>Archivé</option>
+            <select type="text" class="form-control" id="status" name="status" placeholder="" required>
+                <option value="0">Brouillon</option>
+                <option value="1">Publié</option>
+                <option value="2">Archivé</option>
             </select>
         </div>
         <div class="form-group">
