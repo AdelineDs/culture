@@ -20,9 +20,9 @@ class EventsManager extends Model{
             return $event->fetch(); //access to the first line of results
         }
         else {
-            $error = "Aucun évènement ne correspond à cette identifiant";
-            return $error;
-            throw new \Exception("Aucun évènement ne correspond à l'identifiant '$idEvent'");
+            $message = "error";
+            return $message;
+            //throw new \Exception("Aucun évènement ne correspond à l'identifiant '$idEvent'");
         }
     }
     

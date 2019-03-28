@@ -71,7 +71,17 @@ class  PagesController extends Controller {
     public function getEvent(RequestInterface $request, ResponseInterface $response, $idEvent) {
         $this->events = new EventsManager();
         $event = $this->events->getEvent($idEvent["id"]);
-        $this->render($response, 'pages/eventDetail.html.twig', ['event' => $event]);
+        if ($event == 'error'){
+            $message = "Aucun évènement ne correspond à l'identifiant indiquée";
+            $this->render($response, 'pages/errorPage.html.twig', ['error' => $message]);
+        }
+        else {
+            $this->render($response, 'pages/eventDetail.html.twig', ['event' => $event]);
+        }
+    }
+    
+    public function notFound(RequestInterface $request, ResponseInterface $response) {
+        $this->render($response, 'pages/404.html.twig');
     }
    
 }

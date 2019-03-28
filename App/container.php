@@ -22,3 +22,11 @@ $container['view'] = function ($container) {
     
     return $view;
 };
+
+//Override the default Not Found Handler after App
+unset($container['notFoundHandler']);
+$container['notFoundHandler'] = function ($c) {
+    return function ($request, $response) use ($c) {
+        return $c['view']->render($response->withStatus(404), 'pages/errorPage.html.twig', []);
+    };
+};

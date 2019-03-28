@@ -22,5 +22,6 @@ $app->get('/admin', \App\Controllers\PagesController::class . ':admin')->setName
 $app->post('/admin', \App\Controllers\PagesController::class . ':postEvent');
 $app->get('/search', \App\Controllers\PagesController::class . ':searchPage')->setName('search');
 $app->get('/event/{id:[0-9]+}', \App\Controllers\PagesController::class . ':getEvent')->setName('event');
+$app->get('/notFound', \App\Controllers\PagesController::class . ':notfound')->setName('notFound');
 
 $app->run();
