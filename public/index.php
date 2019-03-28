@@ -28,5 +28,7 @@ $app->get('/event/{id:[0-9]+}', \App\Controllers\PagesController::class . ':getE
 $app->get('/notFound', \App\Controllers\PagesController::class . ':notfound')->setName('notFound');
 $app->get('/contact', \App\Controllers\PagesController::class . ':getContact')->setName('contact');
 $app->post('/contact', \App\Controllers\PagesController::class . ':postContact');
+$app->get('/connect', \App\Controllers\PagesController::class . ':getAdmin')->setName('connectAdmin');
+$app->post('/connect', \App\Controllers\PagesController::class . ':connection');
 
 $app->run();
