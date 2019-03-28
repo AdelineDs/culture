@@ -5,6 +5,10 @@ $container['debug'] = function () {
     return true;
 };
 
+$container['csrf'] = function () {
+    return new \Slim\Csrf\Guard;
+};
+
 $container['view'] = function ($container) {
     $dir = dirname(__DIR__);
     $view = new \Slim\Views\Twig($dir . '/app/views', [
@@ -29,4 +33,14 @@ $container['notFoundHandler'] = function ($c) {
     return function ($request, $response) use ($c) {
         return $c['view']->render($response->withStatus(404), 'pages/errorPage.html.twig', []);
     };
+};
+
+$container['mailer'] = function ($container) {
+    if ($container->debug) {
+        $transport = (new Swift_SmtpTransport('localhost', 1025));
+    } else {
+        $transport = (new Swift_MailTransport());
+    }
+    $mailer = (new Swift_Mailer($transport));
+    return $mailer;
 };

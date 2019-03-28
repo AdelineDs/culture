@@ -30,7 +30,7 @@ class  PagesController extends Controller {
         v::date()->validate($request->getParam('date')) || $errors['date'] = 'Veuillez entrer un format de date correct';
         v::notEmpty()->validate($request->getParam('hour')) || $errors['hour'] = 'Veuillez entrer une heure';
         v::notEmpty()->validate($request->getParam('place')) || $errors['place'] = 'Veuillez entrer un lieu';
-        v::floatVal()->validate($request->getParam('price')) || $errors['price'] = 'Veuillez entrer un tarif';
+        v::floatVal()->validate($request->getParam('price')) || $errors['price'] = 'Veuillez entrer unformat de tarif valable (nombre entier ou à virgule)';
         v::notEmpty()->validate($request->getParam('description')) || $errors['description'] = 'Veuillez entrer une description';
         v::date()->validate($request->getParam('start_view_date')) || $errors['start_view_date'] = 'Veuillez entrer un format de date correct';
         v::notEmpty()->validate($request->getParam('start_view_hour')) || $errors['start_view_hour'] = 'Veuillez entrer une heure';
@@ -57,7 +57,7 @@ class  PagesController extends Controller {
         } else {
             $this->flash('Certains champs n\'ont pas été rempli correctement' , 'error');
             $this->flash($errors, 'errors');
-            return $this->redirect($response, 'admin', 400);
+            return $this->redirect($response, 'admin', 301);
         }
     }
     
@@ -83,5 +83,33 @@ class  PagesController extends Controller {
     public function notFound(RequestInterface $request, ResponseInterface $response) {
         $this->render($response, 'pages/404.html.twig');
     }
+    
+         public function getContact(RequestInterface $request, ResponseInterface $response) {
+         return $this->render($response, 'pages/contact.html.twig');
+    }
+    
+     public function postContact(RequestInterface $request, ResponseInterface $response) {
+         $errors = [];
+         
+         v::email()->validate($request->getParam('email')) || $errors['email'] = 'Votre email n\'est pas valide';
+         v::notEmpty()->validate($request->getParam('name')) || $errors['name'] = 'Veuillez entrer votre nom';
+         v::notEmpty()->validate($request->getParam('content')) || $errors['content'] = 'Veuillez entrer un message';
+
+         
+         if (empty($errors)){
+            $message = (new \Swift_Message('Message de contact'))
+                ->setFrom([$request->getParam('email') => $request->getParam('name')])
+                ->setTo('contact@monsite.fr')
+                ->setBody("Un email vous a été envoyé : 
+            {$request->getParam('content')}");
+            $this->mailer->send($message);
+            $this->flash('Votre message a été envoyé avec succès');
+            return $this->redirect($response, 'contact');
+         } else {
+            $this->flash('Certains champs n\'ont pas été rempli correctement' , 'error');
+            $this->flash($errors, 'errors');
+            return $this->redirect($response, 'contact', 301);
+         }
+     }
    
 }

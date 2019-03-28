@@ -1,0 +1,55 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+
+    <h1>Nous contacter</h1>
+    <p>Une question, une suggestion, un évènement que vous souhaiteriez voir apparaitre,... ? N'hésitez pas à nous contacter via ce formulaire !</p>
+    
+    {% if flash.success %}
+        <div class="alert alert-success">
+            {{ flash.success }}
+        </div>
+    {% endif %}
+    {% if flash.error %}
+        <div class="alert alert-danger">
+            {{ flash.error}}
+        </div>
+    {% endif %}
+    
+    <form action="{{ path_for('contact') }}" method="post">
+        {{ csrf() }}
+        <div class="form-group">
+            <label for="name">Votre nom</label>
+            <input type="text" class="form-control {% if flash.errors.name %} is-invalid {% endif %}" id="name" name="name" value="{{ old.name}}" required>
+            {% if flash.errors.name %} 
+                <div class="invalid-feedback">
+                    {{ flash.errors.name }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="email">Votre email</label>
+            <input type="email" class="form-control {% if flash.errors.email %} is-invalid {% endif %}" id="email" name="email" value="{{ old.email}}" required>
+            {% if flash.errors.email %} 
+                <div class="invalid-feedback">
+                    {{ flash.errors.email }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="content">Votre message</label>
+            <textarea type="text" class="form-control {% if flash.errors.content %} is-invalid {% endif %}" id="content" name="content" required>{{ old.content}}</textarea>
+            {% if flash.errors.content %} 
+                <div class="invalid-feedback">
+                    {{ flash.errors.content }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Envoyer" >
+        </div>
+ 
+    </form>
+
+
+{% endblock %}
