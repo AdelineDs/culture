@@ -1,0 +1,13 @@
+{# App/views/pages/eventDetail.html.twig #}
+
+{% extends "layout.html.twig" %}
+
+{% block content %}
+
+    <h1>{{event.name}}</h1>
+    <h2> Organisé par : {{event.organizer}}</h2>
+    <h3> à : {{event.place}}, le : {{ event.date }} à {{ event.hour }}</h3>
+    <h4> Tarif : {% if event.price == 0 %} gratuit {% else %} {{event.price}} {% endif%}</h4>
+    <p>{{ event.description }}</p>
+    
+{% endblock content%}

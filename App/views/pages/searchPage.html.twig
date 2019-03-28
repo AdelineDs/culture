@@ -1,0 +1,29 @@
+{# App/views/pages/searchPage.html.twig #}
+
+{% extends "layout.html.twig" %}
+
+{% block content %}
+
+    <h1>Résultats de recherche</h1>
+   
+    <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Nom de l'évènement</th>
+                    <th scope="col">Organisateur</th>
+                    <th scope="col">Lieu</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Heure</th>
+                    <th scope="col">Tarif</th>
+                    <th scope="col">Plus de détails</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events  %}
+                     {{ include('pages/eventsTemplate.html.twig', { 'event' : event })}}
+                {% endfor %}
+             </tbody>
+     </table>
+    
+{% endblock content%}

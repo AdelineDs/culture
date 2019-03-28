@@ -14,11 +14,11 @@ class  PagesController extends Controller {
     public function home(RequestInterface $request, ResponseInterface $response) {
         $this->events = new EventsManager();
         $events = $this->events->getEvents();
-        $this->render($response, 'pages/home.twig', ['events' => $events]);
+        $this->render($response, 'pages/home.html.twig', ['events' => $events]);
     }
     
     public function admin(RequestInterface $request, ResponseInterface $response) {
-        $this->render($response, 'pages/admin.twig');
+        $this->render($response, 'pages/admin.html.twig');
     }
     
     public function postEvent(RequestInterface $request, ResponseInterface $response) {
@@ -39,13 +39,13 @@ class  PagesController extends Controller {
         v::intVal()->validate($request->getParam('status')) || $errors['end_view_hour'] = 'Erreur avec le statut';
 
         if (empty($errors)){
-            $name = $request->getParam('name');
-            $organizer = $request->getParam('organizer');
-            $date = $request->getParam('date');
-            $hour = $request->getParam('hour');
-            $place = $request->getParam('place');
-            $price = $request->getParam('price');
-            $description = $request->getParam('description');
+            $name = strip_tags($request->getParam('name'));
+            $organizer = strip_tags($request->getParam('organizer'));
+            $date = strip_tags ($request->getParam('date'));
+            $hour = strip_tags($request->getParam('hour'));
+            $place = strip_tags($request->getParam('place'));
+            $price = strip_tags($request->getParam('price'));
+            $description = strip_tags($request->getParam('description'));
             $startViewDate = $request->getParam('start_view_date');
             $startViewHour = $request->getParam('start_view_hour');
             $endViewDate = $request->getParam('end_view_date');
@@ -65,7 +65,13 @@ class  PagesController extends Controller {
         $this->events = new EventsManager();
         $keyWords = $request->getParam('search');
         $events = $this->events->searchEvents($keyWords);
-        $this->render($response, 'pages/searchPage.twig', ['events' => $events]);
+        $this->render($response, 'pages/searchPage.html.twig', ['events' => $events]);
+    }
+    
+    public function getEvent(RequestInterface $request, ResponseInterface $response, $idEvent) {
+        $this->events = new EventsManager();
+        $event = $this->events->getEvent($idEvent["id"]);
+        $this->render($response, 'pages/eventDetail.html.twig', ['event' => $event]);
     }
    
 }

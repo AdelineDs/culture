@@ -1,0 +1,12 @@
+{# App/views/pages/eventsTemplate.html.twig #}
+
+                <tr>
+                    <th scope="row"></th>
+                    <td>{{ event.name }}</td>
+                    <td>{{ event.organizer }}</td>
+                    <td>{{ event.place }}</td>
+                    <td>{{ event.date_fr }}</td>
+                    <td>{{ event.hour }}</td>
+                    <td>{% if event.price == 0 %} gratuit {% else %} {{event.price}} {% endif%}</td>
+                    <td><a href="{{ path_for('event', { 'id': event.id }) }}">Détails<a></td>
+                </tr>
