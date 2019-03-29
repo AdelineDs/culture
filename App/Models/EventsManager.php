@@ -5,15 +5,15 @@ class EventsManager extends Model{
 
     // return all events 
     public function getEvents() {
-        $sql = 'SELECT id, name, organizer, DATE_FORMAT(date, "%d/%m/%Y") as date_fr, hour, place, price, description, start_view_date, start_view_hour, end_view_date, end_view_hour, status  FROM '
-            . 'events  ORDER BY date DESC';
+        $sql = 'SELECT id, name, organizer, date, hour, place, price, description, start_view_date, end_view_date, status  FROM '
+            . 'events  ORDER BY date';
         $events = $this->executeQuery($sql)->fetchAll(\PDO::FETCH_OBJ);
         return $events;
     }
     
     //return an event 
     public function getEvent($idEvent) {
-        $sql = 'SELECT id, name, organizer, DATE_FORMAT(date, "%d/%m/%Y") as date_fr, hour, place, price, description '
+        $sql = 'SELECT id, name, organizer, date, hour, place, price, description, start_view_date, end_view_date, status '
                 . 'FROM events WHERE id= ? ';
         $event= $this->executeQuery($sql, array($idEvent));
         if ($event->rowCount() == 1) {
@@ -27,10 +27,10 @@ class EventsManager extends Model{
     }
     
     // insert new event in bdd 
-    public function addEvent($name, $organizer, $date, $hour, $place, $price, $description, $startViewDate, $startViewHour, $endViewDate, $endViewHour, $status){
-        $sql = 'INSERT INTO events(name, organizer, date, hour, place, price, description, start_view_date, start_view_hour, end_view_date, end_view_hour, status) '
-                . 'VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-        $this->executeQuery($sql, array($name, $organizer, $date, $hour, $place, $price, $description, $startViewDate, $startViewHour, $endViewDate, $endViewHour, $status));
+    public function addEvent($name, $organizer, $date, $hour, $place, $price, $description, $startViewDate, $endViewDate, $status){
+        $sql = 'INSERT INTO events(name, organizer, date, hour, place, price, description, start_view_date,  end_view_date, status) '
+                . 'VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        $this->executeQuery($sql, array($name, $organizer, $date, $hour, $place, $price, $description, $startViewDate, $endViewDate,  $status));
     }
     
     // return events according to key words
@@ -42,9 +42,21 @@ class EventsManager extends Model{
             $queryValue .= 'OR CONCAT(name, organizer, date, description, place) LIKE \'%' . $words[$nbWordsLoop] . '%\'';
         }
         $queryValue = ltrim($queryValue,'OR champ  LIKE'); //suppression de OR au début de la boucle
-        $sql = 'SELECT id, name, organizer, DATE_FORMAT(date, "%d/%m/%Y") as date_fr, hour, place, price, description, start_view_date, start_view_hour, end_view_date, end_view_hour, status  FROM '
+        $sql = 'SELECT id, name, organizer, date, hour, place, price, description, start_view_date, end_view_date,  status  FROM '
             . 'events WHERE ' . $queryValue . 'ORDER BY date ';
         $events = $this->executeQuery($sql)->fetchAll(\PDO::FETCH_OBJ);
         return $events;
+    }
+    
+     //update an event
+    public function updateEvent($id, $name, $organizer, $date, $hour, $place, $price, $description, $startViewDate, $endViewDate, $status){
+        $sql = 'UPDATE events SET name= ?, organizer=?, date=?, hour=?, place=?, price=?, description=?, start_view_date=?, end_view_date=?, status=? WHERE id=?';
+        $this->executeQuery($sql, array($name, $organizer, $date, $hour, $place, $price, $description, $startViewDate, $endViewDate, $status, $id));
+    }
+    
+    //delete an event in database
+    public function deleteEvent($id) {
+        $sql = 'DELETE FROM events WHERE id= ?';
+        $this->executeQuery($sql, array($id));
     }
 }

@@ -21,14 +21,24 @@ $app->add($container->csrf);//verifie la présence d'un token csrf
 
 //Routes 
 $app->get('/', \App\Controllers\PagesController::class . ':home')->setName('root');
+
 $app->get('/admin', \App\Controllers\PagesController::class . ':admin')->setName('admin');
 $app->post('/admin', \App\Controllers\PagesController::class . ':postEvent');
+$app->put('/admin', \App\Controllers\PagesController::class . ':updateEvent');
+$app->get('/admin/{id:[0-9]+}', \App\Controllers\PagesController::class . ':admin')->setName('update');
+$app->delete('/admin', \App\Controllers\PagesController::class . ':deleteEvent');
+
 $app->get('/search', \App\Controllers\PagesController::class . ':searchPage')->setName('search');
+
 $app->get('/event/{id:[0-9]+}', \App\Controllers\PagesController::class . ':getEvent')->setName('event');
+
 $app->get('/notFound', \App\Controllers\PagesController::class . ':notfound')->setName('notFound');
+
 $app->get('/contact', \App\Controllers\PagesController::class . ':getContact')->setName('contact');
 $app->post('/contact', \App\Controllers\PagesController::class . ':postContact');
+
 $app->get('/connect', \App\Controllers\PagesController::class . ':getAdmin')->setName('connectAdmin');
 $app->post('/connect', \App\Controllers\PagesController::class . ':connection');
+$app->get('/disconnect', \App\Controllers\PagesController::class . ':disconnect')->setName('disconnect');
 
 $app->run();
