@@ -2,7 +2,13 @@
 
 {% if session.id %} 
                 <tr>
-                    <th scope="row">
+                    <th scope="row" class="{% if event.status == 0%}
+                            table-info
+                        {% elseif event.status == 2%}
+                           table-warning
+                        {% elseif event.status == 1 and event.date|date("Y-m-d") < "now"|date("Y-m-d") %}
+                            table-danger
+                        {% endif %}">
                         {% if event.status == 0%}
                             Brouillon
                         {% elseif event.status == 2%}

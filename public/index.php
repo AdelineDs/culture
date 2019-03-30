@@ -23,11 +23,12 @@ $app->add($container->csrf);//verifie la présence d'un token csrf
 /*Pages routes*/
 $app->get('/', \App\Controllers\PagesController::class . ':home')->setName('root');
 $app->get('/search', \App\Controllers\PagesController::class . ':searchPage')->setName('search');
+$app->get('/recherche', \App\Controllers\PagesController::class . ':search')->setName('recherche');
 $app->get('/notFound', \App\Controllers\PagesController::class . ':notfound')->setName('notFound');
 /*Events routes*/
 $app->get('/event/{id:[0-9]+}', \App\Controllers\EventsController::class . ':getEvent')->setName('event');
-$app->get('/admin', \App\Controllers\PagesController::class . ':admin')->setName('admin');
-$app->get('/admin/{id:[0-9]+}', \App\Controllers\EventsController::class . ':adminEvent')->setName('update');
+$app->get('/admin', \App\Controllers\EventsController::class . ':adminEvent')->setName('admin');
+$app->get('/admin/{id}', \App\Controllers\EventsController::class . ':adminEvent')->setName('update');
 $app->post('/admin', \App\Controllers\EventsController::class . ':postEvent');
 $app->put('/admin', \App\Controllers\EventsController::class . ':updateEvent');
 $app->delete('/admin', \App\Controllers\EventsController::class . ':deleteEvent');

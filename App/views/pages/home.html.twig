@@ -8,6 +8,71 @@
         <h1>Bienvenue</h1>
         <p>Bienvenue, sur le site de la <strong> vie culturelle </strong> de la Ville de  <strong>Troyes </strong>!</p>
     </div>
+            {% if flash.success %}
+            <div class="alert alert-success">
+                {{ flash.success }}
+            </div>
+        {% endif %}
+        {% if flash.error %}
+            <div class="alert alert-danger">
+                {{ flash.error}}
+            </div>
+        {% endif %}
+    <form action="{{ path_for('recherche') }}">
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="name">Nom : </label>
+                    <input 
+                        type="text" 
+                        class="form-control {% if flash.errors.name %} is-invalid {% endif %}"
+                        id="name"  name="name" 
+                        placeholder="" 
+                        value="{{ old.name}} " 
+                        >
+                </div>
+                {% if flash.errors.name %} 
+                    <div class="invalid-feedback">
+                        {{ flash.errors.name }}
+                    </div>
+                {% endif %}
+                <div class="form-group col-md-3">
+                    <label for="organizer">Organisateur : </label>
+                    <input 
+                        type="text" 
+                        class="form-control {% if flash.errors.organizer %} is-invalid {% endif %}" 
+                        id="organizer"  
+                        name="organizer"
+                        placeholder="" 
+                        value="{{ old.organizer}}" 
+                        >
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="date">Date : </label>
+                    <input 
+                        type="date" 
+                        class="form-control {% if flash.errors.date %} is-invalid {% endif %}" 
+                        id="date" 
+                        name="date" 
+                        placeholder="" 
+                        value="{{ old.date}}" 
+                        min="2019-01-01" max="2100-12-31" 
+                        >
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="place">Lieu : </label>
+                    <input 
+                        type="text" 
+                        class="form-control {% if flash.errors.place %} is-invalid {% endif %}" 
+                        id="place" 
+                        name="place" 
+                        placeholder="" 
+                        value="{{ old.place }}">
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary my-2 my-sm-0" type="submit">Rechercher un évènement</button>
+            </div>
+        </form>
     <div>
         <table class="table table-hover">
             <thead>

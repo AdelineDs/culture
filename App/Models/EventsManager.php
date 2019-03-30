@@ -48,6 +48,34 @@ class EventsManager extends Model{
         return $events;
     }
     
+    // return events according to key words
+    public function recherche($name, $organizer, $date, $place) {
+        if ($name == ''){
+            $nameQuery = 'name IN (\'\')';
+        }else{
+            $nameQuery = 'name LIKE \'%' . $name . '%\'';
+        }
+        if ($organizer == ''){
+            $organizerQuery = 'organizer IN (\'\')';
+        }else{
+            $organizerQuery = 'organizer LIKE \'%' . $organizer . '%\'';
+        }
+        if ($date == ''){
+            $dateQuery = 'date IN (\'\')';
+        }else{
+            $dateQuery= 'date LIKE \'%' . $date . '%\'';
+        }
+         if ($place == ''){
+            $placeQuery = 'place IN (\'\')';
+        }else{
+            $placeQuery= 'place LIKE \'%' . $place . '%\'';
+        }
+        $sql = 'SELECT id, name, organizer, date, hour, place, price, description, start_view_date, end_view_date,  status  FROM '
+            . 'events WHERE ' . $nameQuery . ' OR ' . $organizerQuery . ' OR ' . $dateQuery . ' OR ' . $placeQuery .  ' ORDER BY date ';
+        $events = $this->executeQuery($sql)->fetchAll(\PDO::FETCH_OBJ);
+        return $events;
+    }
+    
      //update an event
     public function updateEvent($id, $name, $organizer, $date, $hour, $place, $price, $description, $startViewDate, $endViewDate, $status){
         $sql = 'UPDATE events SET name= ?, organizer=?, date=?, hour=?, place=?, price=?, description=?, start_view_date=?, end_view_date=?, status=? WHERE id=?';
