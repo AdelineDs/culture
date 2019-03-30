@@ -6,14 +6,14 @@
                             table-info
                         {% elseif event.status == 2%}
                            table-warning
-                        {% elseif event.status == 1 and event.date|date("Y-m-d") < "now"|date("Y-m-d") %}
+                        {% elseif event.status == 1 and event.dateEvent|date("Y-m-d") < "now"|date("Y-m-d") %}
                             table-danger
                         {% endif %}">
                         {% if event.status == 0%}
                             Brouillon
                         {% elseif event.status == 2%}
                             Archivé
-                        {% elseif event.status == 1 and event.date|date("Y-m-d") < "now"|date("Y-m-d") %}
+                        {% elseif event.status == 1 and event.dateEvent|date("Y-m-d") < "now"|date("Y-m-d") %}
                             A archiver
                         {% endif %}</th>
                     <td>{{ event.name }}</td>
@@ -31,7 +31,7 @@
             <td>{{ event.name }}</td>
             <td>{{ event.organizer }}</td>
             <td>{{ event.place }}</td>
-            <td>{{ event.date|date('d/m/Y') }}</td>
+            <td>{{ event.dateEvent|date('d/m/Y') }}</td>
             <td>{{ event.hour }}</td>
             <td>{% if event.price == 0 %} gratuit {% else %} {{event.price}} {% endif%}</td>
             <td><a href="{{ path_for('event', { 'id': event.id }) }}">Détails<a></td>

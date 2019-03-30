@@ -24,8 +24,35 @@ class  EventsController extends Controller {
         v::date()->validate($request->getParam('start_view_date')) || $errors['start_view_date'] = 'Veuillez entrer un format de date correct';
         v::date()->validate($request->getParam('end_view_date')) || $errors['end_view_date'] = 'Veuillez entrer un format de date correct';
         v::intVal()->validate($request->getParam('status')) || $errors['end_view_hour'] = 'Erreur avec le statut';
-        
+       
         return $errors;
+    }
+    
+    public function verifyImage($file) {
+        $sizeMax = 1000000;
+        $fileSize = filesize($file['tmp_name']);
+        $image = basename($file['name']);
+        $extends = array('.png', '.gif', '.jpg', '.jpeg');
+        $extend = strtolower(strrchr($file['name'], '.'));
+        if(in_array($extend, $extends)) //Si l'extension est dans le tableau
+        {
+            if($fileSize < $sizeMax) {
+                $folder = 'images/';
+                $image = uniqid() . $extend;
+                if (move_uploaded_file($file['tmp_name'], $folder . $image)) {
+                    $url = $folder . $image;
+                    return $url;
+                }
+                else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }else{
+            return false;
+        }
+         
     }
     
     public function adminEvent(RequestInterface $request, ResponseInterface $response, $idEvent = []) {
@@ -43,7 +70,16 @@ class  EventsController extends Controller {
     public function postEvent(RequestInterface $request, ResponseInterface $response) {
         $this->events = new EventsManager();
         $errors = $this->validateParams($request);
-
+        if(isset($_FILES['image'])){
+            $result = $this->verifyImage($_FILES['image']);
+        }
+        $image='';
+        if(isset($result) == FALSE){
+            $errors['image'] = "Erreur lors du téléchargement, vérifier le format (jpg, jpeg, png, gif) et la taille (1MB max) du fichier";
+        } else {
+            $image=$result;
+        }
+        
         if (empty($errors)){
             $name = strip_tags($request->getParam('name'));
             $organizer = strip_tags($request->getParam('organizer'));
@@ -55,7 +91,7 @@ class  EventsController extends Controller {
             $startViewDate = $request->getParam('start_view_date');
             $endViewDate = $request->getParam('end_view_date');
             $status = $request->getParam('status');
-            $this->events->addEvent($name, $organizer, $date, $hour, $place, $price, $description, $startViewDate, $endViewDate, $status);
+            $this->events->addEvent($name, $organizer, $date, $hour, $place, $price, $description, $image, $startViewDate, $endViewDate, $status);
             $this->flash('Le nouvel évènement a été enregistré avec succès');
             return $this->redirect($response, 'admin');
         } else {
@@ -69,9 +105,23 @@ class  EventsController extends Controller {
         $this->events = new EventsManager();
         
         $errors = $this->validateParams($request);
+        if(isset($_FILES['image'])){
+            $result = $this->verifyImage($_FILES['image']);
+        }
+        $image='';
+        if(isset($result) == FALSE){
+            $errors['image'] = "Erreur lors du téléchargement, vérifier le format (jpg, jpeg, png, gif) et la taille (1MB max) du fichier";
+        } else {
+            $image=$result;
+        }
+        
         v::intVal()->validate($request->getParam('id')) || $errors['id'] = 'Erreur avec l\'identifiant';
-
+        v::stringType()->validate($request->getParam('url')) || $errors['id'] = 'Erreur avec la récupération del\'image';
+        
         if (empty($errors)){
+            if($image == ''){
+                $image=$request->getParam('url');
+            }
             $id = $request->getParam('id');
             $name = strip_tags($request->getParam('name'));
             $organizer = strip_tags($request->getParam('organizer'));
@@ -83,13 +133,13 @@ class  EventsController extends Controller {
             $startViewDate = $request->getParam('start_view_date');
             $endViewDate = $request->getParam('end_view_date');
             $status = $request->getParam('status');
-            $this->events->updateEvent($id, $name, $organizer, $date, $hour, $place, $price, $description, $startViewDate, $endViewDate, $status);
+            $this->events->updateEvent($id, $name, $organizer, $date, $hour, $place, $price, $description, $image, $startViewDate, $endViewDate, $status);
             $this->flash('L\'évènement a été mis à jour avec succès');
             return $this->redirect($response, 'admin');
         } else {
-            $this->flash('Certains champs n\'ont pas été rempli correctement' , 'error');
+            $this->flash('Une erreur s\'est produite, veullez réessayer' , 'error');
             $this->flash($errors, 'errors');
-            return $this->redirect($response, 'admin', 301);
+            return $this->redirect($response, 'root', 301);
         }
     }
 

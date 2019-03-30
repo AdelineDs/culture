@@ -16,7 +16,7 @@
             </div>
         {% endif %}
 
-        <form action="{% if event %}{{ path_for('admin') }}{% else %}{{ path_for('admin') }}{% endif %}" method="post">
+        <form action="{% if event %}{{ path_for('admin') }}{% else %}{{ path_for('admin') }}{% endif %}" method="post" enctype="multipart/form-data">
             {{ csrf() }}
             <div class="form-row">
                 <div class="form-group col-md-6">
@@ -29,9 +29,9 @@
                         value="{{ event.name }}{{ old.name}} " 
                         required>
                 </div>
-                {% if flash.errors.name %} 
+                {% if flash.errors.image %} 
                     <div class="invalid-feedback">
-                        {{ flash.errors.name }}
+                        {{ flash.errors.image }}
                     </div>
                 {% endif %}
                 <div class="form-group col-md-6">
@@ -60,7 +60,7 @@
                         id="date" 
                         name="date" 
                         placeholder="" 
-                        value="{{ event.date }}{{ old.date}}" 
+                        value="{{ event.dateEvent }}{{ old.date}}" 
                         min="2019-01-01" max="2100-12-31" 
                         required>
                 </div>
@@ -88,7 +88,7 @@
                     </div>
                 {% endif %}
             <div class="form-row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label for="place">Lieu : </label>
                     <input 
                         type="text" 
@@ -103,7 +103,7 @@
                         {{ flash.errors.place }}
                     </div>
                 {% endif %}
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label for="price">Tarif : </label>
                     <input 
                         type="text" 
@@ -118,6 +118,21 @@
                     </div>
                 {% endif %}
                 </div>
+                <div class="form-group col-md-4">
+                    <label for="image">Choisir une image (max. 1 Mo) :</label>
+                    <input type="hidden" name="MAX-FILE-SIZE" value="1048576"/>
+                    <input type="file" name="image" class="parcourir" id="image"/>
+                </div>
+{#                <div class="form-group col-md-4 custom-file">
+                    <label for="image">Ajouter un visuel : </label>
+                    <input type="file" class="custom-file-input" id="image" name="image">
+                    <label class="custom-file-label" for="image">Choisir une image</label>
+                </div>#}
+                {% if flash.errors.image %} 
+                <div class="invalid-feedback">
+                    {{ flash.errors.image }}
+                </div>
+                {% endif %}
             </div>
             <div class="form-group">
                 <label for="description">Description : </label>
@@ -126,10 +141,7 @@
                     class="form-control {% if flash.errors.description %} is-invalid {% endif %}"
                     id="description" 
                     name="description" 
-                    placeholder="" 
-                    required>
-                    {{ event.description }}{{ old.description}}
-                </textarea>
+                    required>{% if event.description %} {{ event.description }}{% elseif old.description %} {{ old.description}}{% endif %} </textarea>
                 {% if flash.errors.description %} 
                     <div class="invalid-feedback">
                         {{ flash.errors.description }}
@@ -182,7 +194,9 @@
             {% if event %}
                 <input type="hidden" name="_METHOD" value="PUT"/>
                 <input type="hidden" id="id" name="id"  value="{{ event.id }}" >
+                <input type="hidden" id="url" name="url"  value="{{ event.image }}" >
             {% endif %}
+            {% if event %}<img src="../../../public/{{event.image}}" style="width:auto; height: 100px" />{% endif %}
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="{% if event %}Mettre à jour{% else %}Envoyer{% endif %}" >
             </div>

@@ -5,15 +5,15 @@ class EventsManager extends Model{
 
     // return all events 
     public function getEvents() {
-        $sql = 'SELECT id, name, organizer, date, hour, place, price, description, start_view_date, end_view_date, status  FROM '
-            . 'events  ORDER BY date';
+        $sql = 'SELECT id, name, organizer, dateEvent, hour, place, price, description, start_view_date, end_view_date, status  FROM '
+            . 'events  ORDER BY dateEvent';
         $events = $this->executeQuery($sql)->fetchAll(\PDO::FETCH_OBJ);
         return $events;
     }
     
     //return an event 
     public function getEvent($idEvent) {
-        $sql = 'SELECT id, name, organizer, date, hour, place, price, description, start_view_date, end_view_date, status '
+        $sql = 'SELECT id, name, organizer, dateEvent, hour, place, price, description, image, start_view_date, end_view_date, status '
                 . 'FROM events WHERE id= ? ';
         $event= $this->executeQuery($sql, array($idEvent));
         if ($event->rowCount() == 1) {
@@ -27,10 +27,10 @@ class EventsManager extends Model{
     }
     
     // insert new event in bdd 
-    public function addEvent($name, $organizer, $date, $hour, $place, $price, $description, $startViewDate, $endViewDate, $status){
-        $sql = 'INSERT INTO events(name, organizer, date, hour, place, price, description, start_view_date,  end_view_date, status) '
-                . 'VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-        $this->executeQuery($sql, array($name, $organizer, $date, $hour, $place, $price, $description, $startViewDate, $endViewDate,  $status));
+    public function addEvent($name, $organizer, $date, $hour, $place, $price, $description, $image, $startViewDate, $endViewDate, $status){
+        $sql = 'INSERT INTO events(name, organizer, dateEvent, hour, place, price, description, image, start_view_date,  end_view_date, status) '
+                . 'VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        $this->executeQuery($sql, array($name, $organizer, $date, $hour, $place, $price, $description, $image, $startViewDate, $endViewDate,  $status));
     }
     
     // return events according to key words
@@ -39,11 +39,11 @@ class EventsManager extends Model{
         $nbWords = count($words); //counting number of words
         $queryValue = '';
         for($nbWordsLoop = 0; $nbWordsLoop < $nbWords; $nbWordsLoop++){
-            $queryValue .= 'OR CONCAT(name, organizer, date, description, place) LIKE \'%' . $words[$nbWordsLoop] . '%\'';
+            $queryValue .= 'OR CONCAT(name, organizer, dateEvent, description, place) LIKE \'%' . $words[$nbWordsLoop] . '%\'';
         }
         $queryValue = ltrim($queryValue,'OR champ  LIKE'); //suppression de OR au début de la boucle
-        $sql = 'SELECT id, name, organizer, date, hour, place, price, description, start_view_date, end_view_date,  status  FROM '
-            . 'events WHERE ' . $queryValue . 'ORDER BY date ';
+        $sql = 'SELECT id, name, organizer, dateEvent, hour, place, price, description, start_view_date, end_view_date,  status  FROM '
+            . 'events WHERE ' . $queryValue . 'ORDER BY dateEvent ';
         $events = $this->executeQuery($sql)->fetchAll(\PDO::FETCH_OBJ);
         return $events;
     }
@@ -51,35 +51,35 @@ class EventsManager extends Model{
     // return events according to key words
     public function recherche($name, $organizer, $date, $place) {
         if ($name == ''){
-            $nameQuery = 'name IN (\'\')';
+            $nameQuery = 'OR name IN (\'\')';
         }else{
-            $nameQuery = 'name LIKE \'%' . $name . '%\'';
+            $nameQuery = 'AND name LIKE \'%' . $name . '%\'';
         }
         if ($organizer == ''){
-            $organizerQuery = 'organizer IN (\'\')';
+            $organizerQuery = 'OR organizer IN (\'\')';
         }else{
-            $organizerQuery = 'organizer LIKE \'%' . $organizer . '%\'';
+            $organizerQuery = 'AND organizer LIKE \'%' . $organizer . '%\'';
         }
         if ($date == ''){
-            $dateQuery = 'date IN (\'\')';
+            $dateQuery = 'dateEvent IN (\'\')';
         }else{
-            $dateQuery= 'date LIKE \'%' . $date . '%\'';
+            $dateQuery= 'DATEDIFF(dateEvent, '. $date .')=0';
         }
          if ($place == ''){
-            $placeQuery = 'place IN (\'\')';
+            $placeQuery = 'OR place IN (\'\')';
         }else{
-            $placeQuery= 'place LIKE \'%' . $place . '%\'';
+            $placeQuery= 'AND place LIKE \'%' . $place . '%\'';
         }
-        $sql = 'SELECT id, name, organizer, date, hour, place, price, description, start_view_date, end_view_date,  status  FROM '
-            . 'events WHERE ' . $nameQuery . ' OR ' . $organizerQuery . ' OR ' . $dateQuery . ' OR ' . $placeQuery .  ' ORDER BY date ';
+        $sql = 'SELECT id, name, organizer, dateEvent, hour, place, price, description, start_view_date, end_view_date,  status  FROM '
+            . 'events WHERE ' . $dateQuery . ' ' . $nameQuery . ' ' . $organizerQuery . ' ' . $placeQuery .  ' ORDER BY dateEvent ';
         $events = $this->executeQuery($sql)->fetchAll(\PDO::FETCH_OBJ);
         return $events;
     }
     
      //update an event
-    public function updateEvent($id, $name, $organizer, $date, $hour, $place, $price, $description, $startViewDate, $endViewDate, $status){
-        $sql = 'UPDATE events SET name= ?, organizer=?, date=?, hour=?, place=?, price=?, description=?, start_view_date=?, end_view_date=?, status=? WHERE id=?';
-        $this->executeQuery($sql, array($name, $organizer, $date, $hour, $place, $price, $description, $startViewDate, $endViewDate, $status, $id));
+    public function updateEvent($id, $name, $organizer, $date, $hour, $place, $price, $description, $image, $startViewDate, $endViewDate, $status){
+        $sql = 'UPDATE events SET name= ?, organizer=?, dateEvent=?, hour=?, place=?, price=?, description=?, image=?, start_view_date=?, end_view_date=?, status=? WHERE id=?';
+        $this->executeQuery($sql, array($name, $organizer, $date, $hour, $place, $price, $description, $image, $startViewDate, $endViewDate, $status, $id));
     }
     
     //delete an event in database
