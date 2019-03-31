@@ -9,9 +9,22 @@
     font-style: normal;
 }
 
-body{
+body, html{
     margin: 0;
     padding: 0;
+    height: 100%;
+}
+
+.blockPage{
+    position: relative;
+    min-height: 100%
+}
+
+footer{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0
 }
 
 * {
@@ -21,31 +34,56 @@ body{
 }
 
 .content{
-    min-height: 90vh;
     font-family: 'arial';
+    padding-bottom: 4em;
 }
 
 .topPageText h1{
     font-family: 'Caviar-Dreams';
 }
 
-/*Page d'accueil'*/
+.table thead th {
+    vertical-align: middle;
+    background-color: #e3f2fd;
+}
 
+
+/*Page d'accueil'*/
 .titleEventSection h2{
     font-size: 1.5rem;
 }
 
-/*Page contact*/
+.pages{
+    display: flex;
+    justify-content: center;
+}
+
+/*Page détail d'un évènement*/
+.blocImage{
+    margin: auto;
+}
+
+.imgEvent{
+    max-width: 350px;
+}
+
+.name{
+    font-size: 2.2rem;
+}
+
 
 /*Page de gestion des évènements*/
-
 .thumbnail {
     width: 200px;
 }
 
 /*MEDIA QUERIES*/
  /*Extra small devices (portrait phones, less than 576px)*/
-@media all and (max-width: 576px) {  }
+@media all and (max-width: 576px) { 
+    .topPageText h1{
+        font-size: 2rem
+    }
+}
 
 /*Small devices (landscape phones, less than 768px)*/
 @media all and (max-width: 768px) { 

@@ -10,7 +10,7 @@
         
         <div class="col-lg-8 offset-lg-2 col-sm-12 my-3">
             <div class="text-center topPageText">
-                <h1>Entrer une nouvel évènement, {{ session.user }} :</h1>
+                <h1>Entrer un nouvel évènement, {{ session.user }} :</h1>
             </div>
             {% if flash.success %}
                 <div class="alert alert-success">
@@ -191,6 +191,14 @@
                         <label for="image">Pour ajouter un visuel, choisir une image (max. 1 Mo) :</label>
                         <input type="hidden" name="MAX-FILE-SIZE" value="1048576"/>
                         <input type="file" name="image" class="parcourir" id="image"/>
+                        {% if event.image %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="delete" id="deleteImage" name="deleteImage">
+                                <label class="form-check-label" for="deleteImage">
+                                  Pour supprimer le visuel actuel sans le remplacer, cochez cette case
+                                </label>
+                            </div>
+                        {% endif %}
                     </div>
                     {% if flash.errors.image %} 
                     <div class="invalid-feedback">
@@ -198,7 +206,7 @@
                     </div>
                     {% endif %}
                     <div class="form-group">
-                        {% if event %}<img src="../../../public/{{event.image}}" alt="{{event.name}}" class="thumbnail"/>{% endif %}
+                        {% if event.image %}<img src="../../../public/{{event.image}}" alt="{{event.name}}" class="thumbnail"/>{% endif %}
                     </div>
                 </div>
                 {% if event %}
@@ -225,8 +233,9 @@
     <div class="col-md-8 offset-md-2 col-sm-12 my-3">
         <div class="text-center topPageText">
             <h1>Vous n'avez pas l'autorisation d'accéder à cette page</h1>
-            <p>Nous vous invitons à retourner sur la page d'accueil en cliquant sur <a  href="{{ path_for('root') }}"> ce lien</a></p>
+            <p>Nous vous invitons à retourner sur la page d'accueil en cliquant sur <a  href="{{ path_for('root', { 'page': 1 }) }}"> ce lien</a></p>
         </div>
     </div>
     {% endif %}
 {% endblock %}
+

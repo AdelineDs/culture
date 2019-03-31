@@ -4,11 +4,21 @@ namespace App\Models;
 class EventsManager extends Model{
 
     // return all events 
-    public function getEvents() {
+    public function getEvents($page) {
+        $start = ($page-1)*10;
         $sql = 'SELECT id, name, organizer, dateEvent, hour, place, price, description, start_view_date, end_view_date, status  FROM '
-            . 'events  ORDER BY dateEvent';
+            . 'events  ORDER BY dateEvent LIMIT 10 OFFSET '.$start. '';
         $events = $this->executeQuery($sql)->fetchAll(\PDO::FETCH_OBJ);
         return $events;
+    }
+    
+    //count the number of events
+    public function getNbPages(){
+        $sql = 'SELECT COUNT(*) AS nbEvents FROM events';
+        $data = $this->executeQuery($sql);
+        $nbEvent = $data->fetchColumn();
+        $nbPages = ceil($nbEvent/10);
+        return $nbPages;
     }
     
     //return an event 
@@ -51,22 +61,22 @@ class EventsManager extends Model{
     // return events according to key words
     public function recherche($name, $organizer, $date, $place) {
         if ($name == ''){
-            $nameQuery = 'OR name IN (\'\')';
+            $nameQuery = 'AND name IS NOT NULL';
         }else{
             $nameQuery = 'AND name LIKE \'%' . $name . '%\'';
         }
         if ($organizer == ''){
-            $organizerQuery = 'OR organizer IN (\'\')';
+            $organizerQuery = 'AND organizer IS NOT NULL';
         }else{
             $organizerQuery = 'AND organizer LIKE \'%' . $organizer . '%\'';
         }
         if ($date == ''){
-            $dateQuery = 'dateEvent IN (\'\')';
+            $dateQuery = 'dateEvent IS NOT NULL';
         }else{
-            $dateQuery= 'DATEDIFF(dateEvent, '. $date .')=0';
+            $dateQuery= 'DATEDIFF(dateEvent, \''. $date .'\')=0';
         }
          if ($place == ''){
-            $placeQuery = 'OR place IN (\'\')';
+            $placeQuery = 'AND place IS NOT NULL';
         }else{
             $placeQuery= 'AND place LIKE \'%' . $place . '%\'';
         }

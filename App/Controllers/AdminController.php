@@ -11,9 +11,9 @@ class  AdminController extends Controller {
     
     public function getAdmin(RequestInterface $request, ResponseInterface $response) {
           if(isset($_SESSION['id']) && isset($_SESSION['user'])) {
-              return $this->render($response, 'pages/connectAdmin.html.twig', ['session' => $_SESSION]);
+              return $this->render($response, 'connectAdmin.html.twig', ['session' => $_SESSION]);
           }
-          return $this->render($response, 'pages/connectAdmin.html.twig');
+          return $this->render($response, 'connectAdmin.html.twig');
       }
     
      public function connection(RequestInterface $request, ResponseInterface $response) {
@@ -36,7 +36,7 @@ class  AdminController extends Controller {
                 $idUser = $adminUser['id'];
                 $_SESSION['id'] = $idUser;
                 $_SESSION['user'] = $user;
-                $this->render($response, 'pages/admin.html.twig', [ 'session' => $_SESSION]);
+                $this->render($response, 'admin.html.twig', [ 'session' => $_SESSION]);
             }
         } else {
             $this->flash('Certains champs n\'ont pas été rempli correctement' , 'error');
@@ -50,9 +50,9 @@ class  AdminController extends Controller {
         if(isset($_SESSION['id']) && isset($_SESSION['user'])) {
             session_unset();
             session_destroy();
-            return $this->render($response, 'pages/admin.html.twig');
+            return $this->render($response, 'admin.html.twig');
         }
-       return $this->render($response, 'pages/admin.html.twig');
+       return $this->render($response, 'admin.html.twig');
     }
    
 }

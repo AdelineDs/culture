@@ -9,7 +9,10 @@ use Psr\Http\Message\ResponseInterface;
 class  ContactController extends Controller {
     
      public function getContact(RequestInterface $request, ResponseInterface $response) {
-         return $this->render($response, 'pages/contact.html.twig');
+         if(isset($_SESSION['id']) && isset($_SESSION['user'])) {
+            return $this->render($response, 'contact.html.twig', ['session' => $_SESSION]);
+         }
+         return $this->render($response, 'contact.html.twig');
     }
     
      public function postContact(RequestInterface $request, ResponseInterface $response) {

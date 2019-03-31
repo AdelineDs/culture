@@ -60,11 +60,11 @@ class  EventsController extends Controller {
             if($idEvent !== []){
                 $this->events = new EventsManager();
                 $event = $this->events->getEvent($idEvent["id"]);
-                return $this->render($response, 'pages/admin.html.twig', ['session' => $_SESSION, 'event' => $event]);
+                return $this->render($response, 'admin.html.twig', ['session' => $_SESSION, 'event' => $event]);
             }
-            return $this->render($response, 'pages/admin.html.twig', ['session' => $_SESSION]);
+            return $this->render($response, 'admin.html.twig', ['session' => $_SESSION]);
         }
-       return $this->render($response, 'pages/admin.html.twig');
+       return $this->render($response, 'admin.html.twig');
     }
     
     public function postEvent(RequestInterface $request, ResponseInterface $response) {
@@ -87,7 +87,7 @@ class  EventsController extends Controller {
             $hour = strip_tags($request->getParam('hour'));
             $place = strip_tags($request->getParam('place'));
             $price = strip_tags($request->getParam('price'));
-            $description = strip_tags($request->getParam('description'));
+            $description = $request->getParam('description');
             $startViewDate = $request->getParam('start_view_date');
             $endViewDate = $request->getParam('end_view_date');
             $status = $request->getParam('status');
@@ -103,12 +103,12 @@ class  EventsController extends Controller {
     
     public function updateEvent(RequestInterface $request, ResponseInterface $response) {
         $this->events = new EventsManager();
-        
         $errors = $this->validateParams($request);
+        $image='';
+        
         if(isset($_FILES['image'])){
             $result = $this->verifyImage($_FILES['image']);
         }
-        $image='';
         if(isset($result) == FALSE){
             $errors['image'] = "Erreur lors du téléchargement, vérifier le format (jpg, jpeg, png, gif) et la taille (1MB max) du fichier";
         } else {
@@ -120,7 +120,11 @@ class  EventsController extends Controller {
         
         if (empty($errors)){
             if($image == ''){
-                $image=$request->getParam('url');
+                if($request->getParam('deleteImage') == 'delete'){
+                    $image='';
+                } else {
+                    $image=$request->getParam('url');
+                }
             }
             $id = $request->getParam('id');
             $name = strip_tags($request->getParam('name'));
@@ -129,7 +133,7 @@ class  EventsController extends Controller {
             $hour = strip_tags($request->getParam('hour'));
             $place = strip_tags($request->getParam('place'));
             $price = strip_tags($request->getParam('price'));
-            $description = strip_tags($request->getParam('description'));
+            $description = $request->getParam('description');
             $startViewDate = $request->getParam('start_view_date');
             $endViewDate = $request->getParam('end_view_date');
             $status = $request->getParam('status');
@@ -148,10 +152,10 @@ class  EventsController extends Controller {
         $event = $this->events->getEvent($idEvent["id"]);
         if ($event == 'error'){
             $message = "Aucun évènement ne correspond à l'identifiant indiquée";
-            $this->render($response, 'pages/errorPage.html.twig', ['error' => $message]);
+            $this->render($response, 'errorPage.html.twig', ['error' => $message]);
         }
         else {
-            $this->render($response, 'pages/eventDetail.html.twig', ['event' => $event]);
+            $this->render($response, 'eventDetail.html.twig', ['event' => $event]);
         }
     }
 
@@ -174,9 +178,9 @@ class  EventsController extends Controller {
      
       public function getAdmin(RequestInterface $request, ResponseInterface $response) {
           if(isset($_SESSION['id']) && isset($_SESSION['user'])) {
-              return $this->render($response, 'pages/connectAdmin.html.twig', ['session' => $_SESSION]);
+              return $this->render($response, 'connectAdmin.html.twig', ['session' => $_SESSION]);
           }
-          return $this->render($response, 'pages/connectAdmin.html.twig');
+          return $this->render($response, 'connectAdmin.html.twig');
       }
     
    

@@ -31,7 +31,7 @@ $container['view'] = function ($container) {
 unset($container['notFoundHandler']);
 $container['notFoundHandler'] = function ($c) {
     return function ($request, $response) use ($c) {
-        return $c['view']->render($response->withStatus(404), 'pages/errorPage.html.twig', []);
+        return $c['view']->render($response->withStatus(404), 'errorPage.html.twig', []);
     };
 };
 

@@ -21,7 +21,8 @@ $app->add($container->csrf);//verifie la présence d'un token csrf
 
 //Routes 
 /*Pages routes*/
-$app->get('/', \App\Controllers\PagesController::class . ':home')->setName('root');
+$app->get('', \App\Controllers\PagesController::class . ':home');
+$app->get('/{page:[0-9]+}', \App\Controllers\PagesController::class . ':home')->setName('root');
 $app->get('/search', \App\Controllers\PagesController::class . ':searchPage')->setName('search');
 $app->get('/recherche', \App\Controllers\PagesController::class . ':search')->setName('recherche');
 $app->get('/notFound', \App\Controllers\PagesController::class . ':notfound')->setName('notFound');

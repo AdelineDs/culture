@@ -7,8 +7,8 @@
 
 {% block content %}
 
-    <div class="text-center mb-3 mt-3 topPageText">
-        <h1>Bienvenue, sur le site de la  vie culturelle de la Ville de Troyes !</h1>
+    <div class="text-center mb-5 mt-3 col-xl-4 offset-xl-4 topPageText">
+        <h1>Bienvenue sur le site de la  vie culturelle de la Ville de Troyes !</h1>
         {% if flash.success %}
             <div class="alert alert-success">
                 {{ flash.success }}
@@ -30,7 +30,7 @@
                         class="form-control {% if flash.errors.name %} is-invalid {% endif %}"
                         id="name"  name="name" 
                         placeholder="" 
-                        value="{{ old.name}} " 
+                        value="{{ old.name}}" 
                         >
                 </div>
                 {% if flash.errors.name %} 
@@ -83,7 +83,7 @@
     <div class="col-md-10 offset-md-1 col-sm-12">
         <table class="table table-hover">
             <thead>
-                <tr>
+                <tr class="text-center">
                     <th scope="col"></th>
                     <th scope="col">Nom de l'évènement</th>
                     <th scope="col">Organisateur</th>
@@ -96,10 +96,44 @@
             </thead>
             <tbody>
                 {% for event in events  %}
-                     {{ include('pages/eventsTemplate.html.twig', { 'event' : event })}}
+                     {{ include('eventsTemplate.html.twig', { 'event' : event })}}
                 {% endfor %}
              </tbody>
         </table>
     </div>
+<div class="text-center pages my-3">
+    <nav aria-label="PageNavigation">
+        <ul class="pagination">
+            {% if page > 1%}
+            {#displaying link for previous page is current page isn't the firs#}
+                <li class="page-item">
+                    <a class="page-link" href="{{ path_for('root', { 'page': 1 })}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Page Précedente</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if nbPages > 1%}
+                {% for key in 1..nbPages %}
+                    <li class="page-item {% if key == page %}  active {% endif %}">
+                        <a class="page-link" href="{{ path_for('root', { 'page': key })}}">
+                            {{key}}
+                        </a>
+                    </li>
+                {% endfor %}
+            {%endif%}
+            {#displaying ling for net page if current page isn't last#}
+            {%if page < nbPages %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ path_for('root', { 'page': (page+1) })}}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Page suivante</span>
+                    </a>
+                </li>
+            {%endif%}
+        </ul>
+    </nav>
+</div>
+
   
 {% endblock content %}
