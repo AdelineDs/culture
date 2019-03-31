@@ -2,28 +2,33 @@
 
 {% extends "layout.html.twig" %}
 
-{% block content %}
+{% block title %}Résultats de recherche{% endblock %}
 
-    <h1>Résultats de recherche</h1>
-   
-    <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Nom de l'évènement</th>
-                    <th scope="col">Organisateur</th>
-                    <th scope="col">Lieu</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Heure</th>
-                    <th scope="col">Tarif</th>
-                    <th scope="col">Plus de détails</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for event in events  %}
-                     {{ include('pages/eventsTemplate.html.twig', { 'event' : event })}}
-                {% endfor %}
-             </tbody>
-     </table>
+{% block content %}
+    
+    <div class="my-3 text-center">
+        <h1>Résultats de recherche</h1>
+    </div>
+   <div class="col-md-10 offset-md-1 col-sm-12">
+        <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Nom de l'évènement</th>
+                        <th scope="col">Organisateur</th>
+                        <th scope="col">Lieu</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Heure</th>
+                        <th scope="col">Tarif</th>
+                        <th scope="col">Plus de détails</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in events  %}
+                         {{ include('pages/eventsTemplate.html.twig', { 'event' : event })}}
+                    {% endfor %}
+                 </tbody>
+         </table>
+   </div>
     
 {% endblock content%}

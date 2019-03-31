@@ -1,0 +1,71 @@
+/*General*/
+@font-face {
+    font-family: 'Caviar-Dreams';
+    src:url('Caviar-Dreams.ttf.woff') format('woff'),
+        url('Caviar-Dreams.ttf.svg#Caviar-Dreams') format('svg'),
+        url('Caviar-Dreams.ttf.eot'),
+        url('Caviar-Dreams.ttf.eot?#iefix') format('embedded-opentype'); 
+    font-weight: normal;
+    font-style: normal;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    font-size: 16px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.content{
+    min-height: 90vh;
+    font-family: 'arial';
+}
+
+.topPageText h1{
+    font-family: 'Caviar-Dreams';
+}
+
+/*Page d'accueil'*/
+
+.titleEventSection h2{
+    font-size: 1.5rem;
+}
+
+/*Page contact*/
+
+/*Page de gestion des évènements*/
+
+.thumbnail {
+    width: 200px;
+}
+
+/*MEDIA QUERIES*/
+ /*Extra small devices (portrait phones, less than 576px)*/
+@media all and (max-width: 576px) {  }
+
+/*Small devices (landscape phones, less than 768px)*/
+@media all and (max-width: 768px) { 
+    thead{
+        display: none;
+    }
+    
+    td{
+        display: block;
+        text-align: center;
+    }
+    
+    th{
+        display: none
+    }
+    
+    tr{
+        border-bottom: solid 1px;
+    }
+}
+
+ /*Medium devices (tablets, less than 992px)*/
+@media all and (max-width: 992px) {  }

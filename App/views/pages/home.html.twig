@@ -1,14 +1,15 @@
 {# App/views/pages/home.html.twig #}
 
 {% extends "layout.html.twig" %}
+{%block style %}<link rel="stylesheet" type="text/css" href="./style.css" />{% endblock %}
+
+{% block title %}Accueil{% endblock %}
 
 {% block content %}
 
-    <div class="text-center my-5">
-        <h1>Bienvenue</h1>
-        <p>Bienvenue, sur le site de la <strong> vie culturelle </strong> de la Ville de  <strong>Troyes </strong>!</p>
-    </div>
-            {% if flash.success %}
+    <div class="text-center mb-3 mt-3 topPageText">
+        <h1>Bienvenue, sur le site de la  vie culturelle de la Ville de Troyes !</h1>
+        {% if flash.success %}
             <div class="alert alert-success">
                 {{ flash.success }}
             </div>
@@ -18,7 +19,9 @@
                 {{ flash.error}}
             </div>
         {% endif %}
-    <form action="{{ path_for('recherche') }}">
+    </div>
+    <div class="col-md-8 offset-md-2 mb-5">
+        <form action="{{ path_for('recherche') }}">
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <label for="name">Nom : </label>
@@ -69,11 +72,15 @@
                         value="{{ old.place }}">
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-groupr">
                 <button class="btn btn-primary my-2 my-sm-0" type="submit">Rechercher un évènement</button>
             </div>
         </form>
-    <div>
+    </div>
+    <div class="titleEventSection col-10 offset-1 text-center mb-3">
+        <h2>Retrouver ici tous les évènements à venir :</h2>
+    </div>
+    <div class="col-md-10 offset-md-1 col-sm-12">
         <table class="table table-hover">
             <thead>
                 <tr>

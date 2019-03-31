@@ -2,10 +2,14 @@
 
 {% extends "layout.html.twig" %}
 
+{% block title %}Erreur{% endblock %}
+
 {% block content %}
 
+    <div class="col-lg-8 offset-lg-2 col-sm-12 my-5 text-center">
     <h1>Une erreure est survenue </h1>
     <p>{% if error %}{{ error }} {% else %} La page que vous demandez n'existe pas {% endif %}</p>
     <p>Nous vous invitons à retourner sur la page d'accueil en cliquant sur <a  href="{{ path_for('root') }}"> ce lien</a></p>
+    </div>
 
 {% endblock content %}

@@ -19,15 +19,15 @@
                     <td>{{ event.name }}</td>
                     <td>{{ event.organizer }}</td>
                     <td>{{ event.place }}</td>
-                    <td>{{ event.date|date('d/m/Y')  }}</td>
-                    <td>{{ event.hour }}</td>
-                    <td>{% if event.price == 0 %} gratuit {% else %} {{event.price}} {% endif%}</td>
+                    <td>{{ event.dateEvent|date('d/m/Y')  }}</td>
+                    <td>{{ event.hour|date('H:i') }}</td>
+                    <td>{% if event.price == 0 %} gratuit {% else %} {{event.price}} € {% endif%}</td>
                     <td><a href="{{ path_for('event', { 'id': event.id }) }}">Détails<a> ou <a href="{{ path_for('update', { 'id': event.id }) }}">Mettre à jour<a></td>
                 </tr>
 {% else %}
     {% if event.status == 1 and event.start_view_date|date("Y-m-d") <= "now"|date("Y-m-d") and event.end_view_date|date("Y-m-d") >= "now"|date("Y-m-d") %}
         <tr>
-            <th scope="row"></th>
+            <th scope="row" class=""></th>
             <td>{{ event.name }}</td>
             <td>{{ event.organizer }}</td>
             <td>{{ event.place }}</td>
